@@ -25,6 +25,12 @@ public class Range : MonoBehaviour
         foreach (var enemy in enemies.Keys.ToList())
         {
             enemies[enemy] += Time.deltaTime;
+
+            if (enemies[enemy] >= tower.attackRate)
+            {
+                enemies[enemy] = 0;
+                tower.Fire(enemy);
+            }
         }
     }
 
@@ -38,21 +44,6 @@ public class Range : MonoBehaviour
 
         enemies.Add(enemy, 0);
         tower.Fire(enemy);
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        // It should be enemy to shoot
-        if (!other.CompareTag("Enemy"))
-            return;
-
-        Enemy enemy = other.gameObject.GetComponent<Enemy>();
-        
-        if (enemies[enemy] >= tower.attackRate)
-        {
-            enemies[enemy] = 0;
-            tower.Fire(enemy);
-        }
     }
 
     private void OnTriggerExit(Collider other)

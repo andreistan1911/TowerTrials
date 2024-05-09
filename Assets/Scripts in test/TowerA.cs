@@ -11,12 +11,14 @@ public class TowerA : Tower
     public GameObject projectilePrefab;
 
     private Transform fireRoot;
+    private float lastFire;
 
     private new void Start()
     {
         base.Start();
 
         fireRoot = transform.Find("FireRoot");
+        lastFire = 0;
 
         Assert.IsNotNull(fireRoot);
         Assert.IsNotNull(projectilePrefab);
@@ -42,6 +44,10 @@ public class TowerA : Tower
 
     override public void Fire(Enemy enemy)
     {
-        Fire(enemy.gameObject);
+        if (Time.time - lastFire >= attackRate)
+        {
+            Fire(enemy.gameObject);
+            lastFire = Time.time;
+        }
     }
 }
