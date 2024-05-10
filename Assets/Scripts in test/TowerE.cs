@@ -6,6 +6,6 @@ public class TowerE : Tower
 {
     override public void Fire(Enemy enemy)
     {
-        enemy.TakeDamage(damage);
+        enemy.TakeDamage(damage, element);
     }
 }

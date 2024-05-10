@@ -5,33 +5,38 @@ using UnityEngine.Scripting.APIUpdating;
 
 public class Projectile : MonoBehaviour
 {
+    private Global.Element _element;
 
-    private float damage;
-    private float speed;
+    private float _damage;
+    private float _speed;
 
-
-    private Transform target;
-    private Vector3 direction;
-    private readonly float birthTime;
+    private Transform _target;
+    private Vector3 _direction;
+    private readonly float _birthTime;
 
     public Transform Target {
-        set { target = value; }
+        set { _target = value; }
     }
 
     public float Damage {
-        set { damage = value; }
+        set { _damage = value; }
     }
 
     public float Speed
     {
-        set { speed = value; }
+        set { _speed = value; }
+    }
+
+    public Global.Element Element
+    {
+        set { _element = value; }
     }
 
     private void Update()
     {
         MoveToTarget();
 
-        if (target == null)
+        if (_target == null)
         {
             Destroy(gameObject);
         }
@@ -39,11 +44,11 @@ public class Projectile : MonoBehaviour
 
     private void MoveToTarget()
     {
-        if (target == null)
+        if (_target == null)
             return;
 
-        direction = (target.position - transform.position).normalized;
-        transform.position += speed * direction * Time.deltaTime;
+        _direction = (_target.position - transform.position).normalized;
+        transform.position += _speed * _direction * Time.deltaTime;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -52,7 +57,7 @@ public class Projectile : MonoBehaviour
         {
             Enemy enemy = collision.gameObject.GetComponent<Enemy>();
 
-            enemy.TakeDamage(damage);
+            enemy.TakeDamage(_damage, _element);
             Destroy(gameObject);
         }
     }

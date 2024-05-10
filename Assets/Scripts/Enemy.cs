@@ -6,53 +6,58 @@ using UnityEngine.AI;
 public class Enemy : MonoBehaviour
 {
     public string type;
+    public Global.Element status;
 
     [Tooltip("NavMesh Waypoints")]
     public Waypoint[] waypoints = { };
 
-    private NavMeshAgent agent;
-    private int currentWaypoint = 0;
+    private NavMeshAgent _agent;
+    private int _currentWaypoint = 0;
 
-    private EnemyStats stats;
-
+    private EnemyStats _stats;
     
 
     private void Start()
     {
         // Setup stats
-        stats = new(Global.enemyValues[type]);
+        _stats = new(Global.enemyValues[type]);
 
         // Setup NavMeshAgent
-        agent = GetComponent<NavMeshAgent>();
+        _agent = GetComponent<NavMeshAgent>();
 
-        if (agent == null)
+        if (_agent == null)
             Debug.LogError("Null agent");
         if (waypoints.Length == 0)
             Debug.LogError("Waypoints must not be an empty Array!");
 
-        agent.speed = stats.speed;
+        _agent.speed = _stats.speed;
     }
 
     private void Update()
     {
         // Follow NavMesh route
         FollowRoute();
-
-        Debug.Log(name + " " + stats.health);
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, Global.Element element)
     {
-        // TODO: elemental here?
-        //HandleReaction()
+        HandleReaction(element);
         HandleDamage(damage);
+    }
+
+    private void HandleReaction(Global.Element element)
+    {
+        //TODO
+
+        print(Global.reactionValues[Global.Element.Fire][Global.Element.Nature].displayName);
+        print(Global.reactionValues[Global.Element.Fire][Global.Element.Water].damage);
     }
 
     private void HandleDamage(float damage)
     {
-        stats.health -= damage;
+        _stats.health -= damage;
 
-        if (stats.health <= 0)
+        if (_stats.health <= 0)
         {
             // TODO: death animation
             Destroy(gameObject);
@@ -61,18 +66,18 @@ public class Enemy : MonoBehaviour
 
     private void FollowRoute()
     {
-        agent.SetDestination(waypoints[currentWaypoint].transform.position);
+        _agent.SetDestination(waypoints[_currentWaypoint].transform.position);
 
-        float distance = Vector3.Distance(waypoints[currentWaypoint].transform.position, transform.position);
+        float distance = Vector3.Distance(waypoints[_currentWaypoint].transform.position, transform.position);
 
         if (distance < 0.7)
         {
-            if (currentWaypoint >= waypoints.Length - 1)
+            if (_currentWaypoint >= waypoints.Length - 1)
             {
-                currentWaypoint = -1;
+                _currentWaypoint = -1;
             }
 
-            currentWaypoint++;
+            _currentWaypoint++;
         }
     }
 }

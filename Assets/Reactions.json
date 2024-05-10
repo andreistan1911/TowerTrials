@@ -7,6 +7,14 @@
       "slow_value": 0.0,
       "slow_duration": 0.0,
       "buff": null
+    },
+    {
+      "name": "FN",
+      "displayName": "Pyrus Nox",
+      "damage": 20.0,
+      "slow_value": 0.3,
+      "slow_duration": 0.2,
+      "buff": "benzen"
     }
   ]
 }

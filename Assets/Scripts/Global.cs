@@ -5,9 +5,9 @@ using UnityEngine;
 public class Global : MonoBehaviour
 {
     public static Dictionary<string, EnemyStats> enemyValues = new();
-    public static Dictionary<string, ReactionStats> reactionValues = new();
+    public static Dictionary<Element, Dictionary<Element, ReactionStats>> reactionValues = new();
 
-    public enum StatusEffect
+    public enum Element
     {
         None,
         Fire,

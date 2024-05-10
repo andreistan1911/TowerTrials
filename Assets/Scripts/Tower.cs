@@ -9,6 +9,8 @@ public abstract class Tower : MonoBehaviour
     public float damage;
     [Tooltip("Seconds between shots")]
     public float attackRate;
+    [Tooltip("Tower element")]
+    public Global.Element element;
     
     public void Start()
     {

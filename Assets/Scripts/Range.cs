@@ -5,16 +5,16 @@ using UnityEngine;
 
 public class Range : MonoBehaviour
 {
-    private Tower tower;
-    private Dictionary<Enemy, float> enemies; // <enemy object, time spent in range>
+    private Tower _tower;
+    private Dictionary<Enemy, float> _enemies; // <enemy object, time spent in range>
 
     private void Start()
     {
-        tower = transform.parent.GetComponent<Tower>();
-        enemies = new Dictionary<Enemy, float>();
+        _tower = transform.parent.GetComponent<Tower>();
+        _enemies = new Dictionary<Enemy, float>();
 
         // Just to be sure
-        if (tower == null)
+        if (_tower == null)
         {
             Debug.Log("Error: tower not found from range");
         }
@@ -22,17 +22,17 @@ public class Range : MonoBehaviour
 
     private void Update()
     {
-        foreach (var enemy in enemies.Keys.ToList())
+        foreach (var enemy in _enemies.Keys.ToList())
         {
             if (enemy == null)
                 continue;
 
-            enemies[enemy] += Time.deltaTime;
+            _enemies[enemy] += Time.deltaTime;
 
-            if (enemies[enemy] >= tower.attackRate)
+            if (_enemies[enemy] >= _tower.attackRate)
             {
-                enemies[enemy] = 0;
-                tower.Fire(enemy);
+                _enemies[enemy] = 0;
+                _tower.Fire(enemy);
             }
         }
     }
@@ -45,8 +45,8 @@ public class Range : MonoBehaviour
 
         Enemy enemy = other.gameObject.GetComponent<Enemy>();
 
-        enemies.Add(enemy, 0);
-        tower.Fire(enemy);
+        _enemies.Add(enemy, 0);
+        _tower.Fire(enemy);
     }
 
     private void OnTriggerExit(Collider other)
@@ -57,7 +57,7 @@ public class Range : MonoBehaviour
 
         Enemy enemy = other.gameObject.GetComponent<Enemy>();
 
-        enemies[enemy] = 0;
-        enemies.Remove(enemy);
+        _enemies[enemy] = 0;
+        _enemies.Remove(enemy);
     }
 }

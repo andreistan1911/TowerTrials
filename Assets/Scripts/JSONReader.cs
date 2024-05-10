@@ -67,10 +67,31 @@ public class JSONReader : MonoBehaviour
         for (int i = 0; i < reactionParsedList.reaction.Length; ++i)
         {
             ReactionParsed currentReaction = reactionParsedList.reaction[i];
+
+            Global.Element firstElement = GetElementByLetter(currentReaction.name[0]);
+            Global.Element secondElement = GetElementByLetter(currentReaction.name[1]);
+
             ReactionStats reactionStats = new(currentReaction.displayName, currentReaction.damage, currentReaction.slowValue, currentReaction.slowDuration, currentReaction.buff);
 
-            Global.reactionValues.Add(currentReaction.name, reactionStats);
+            if (Global.reactionValues.ContainsKey(firstElement))
+                Global.reactionValues[firstElement].Add(secondElement, reactionStats);
+            else
+                Global.reactionValues.Add(firstElement, new Dictionary<Global.Element, ReactionStats>() { { secondElement, reactionStats } });
         }
+    }
+
+    private Global.Element GetElementByLetter(char letter)
+    {
+        Global.Element element = Global.Element.None;
+
+        if (letter == 'F')
+            element = Global.Element.Fire;
+        else if (letter == 'W')
+            element = Global.Element.Water;
+        else if (letter == 'N')
+            element = Global.Element.Nature;
+
+        return element;
     }
 }
 

@@ -10,24 +10,24 @@ public class TowerA : Tower
     [Tooltip("Prefab of the projectile that is shot")]
     public GameObject projectilePrefab;
 
-    private Transform fireRoot;
-    private float lastFire;
+    private Transform _fireRoot;
+    private float _lastFire;
 
     private new void Start()
     {
         base.Start();
 
-        fireRoot = transform.Find("FireRoot");
-        lastFire = 0;
+        _fireRoot = transform.Find("FireRoot");
+        _lastFire = 0;
 
-        Assert.IsNotNull(fireRoot);
+        Assert.IsNotNull(_fireRoot);
         Assert.IsNotNull(projectilePrefab);
         Assert.AreNotEqual(0, projectileSpeed);
     }
 
     public void Fire(GameObject target)
     {
-        GameObject projectileInstance = Instantiate(projectilePrefab, fireRoot.position, Quaternion.identity);
+        GameObject projectileInstance = Instantiate(projectilePrefab, _fireRoot.position, Quaternion.identity);
         Projectile projectile = projectileInstance.GetComponent<Projectile>();
 
         if (projectile == null)
@@ -40,14 +40,15 @@ public class TowerA : Tower
         projectile.Target = target.transform;
         projectile.Damage = damage;
         projectile.Speed = projectileSpeed;
+        projectile.Element = element;
     }
 
     override public void Fire(Enemy enemy)
     {
-        if (Time.time - lastFire >= attackRate)
+        if (Time.time - _lastFire >= attackRate)
         {
             Fire(enemy.gameObject);
-            lastFire = Time.time;
+            _lastFire = Time.time;
         }
     }
 }
