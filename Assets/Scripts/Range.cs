@@ -24,6 +24,9 @@ public class Range : MonoBehaviour
     {
         foreach (var enemy in enemies.Keys.ToList())
         {
+            if (enemy == null)
+                continue;
+
             enemies[enemy] += Time.deltaTime;
 
             if (enemies[enemy] >= tower.attackRate)

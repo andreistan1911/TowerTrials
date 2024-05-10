@@ -15,6 +15,8 @@ public class Enemy : MonoBehaviour
 
     private EnemyStats stats;
 
+    
+
     private void Start()
     {
         // Setup stats
@@ -42,6 +44,12 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(float damage)
     {
         // TODO: elemental here?
+        //HandleReaction()
+        HandleDamage(damage);
+    }
+
+    private void HandleDamage(float damage)
+    {
         stats.health -= damage;
 
         if (stats.health <= 0)

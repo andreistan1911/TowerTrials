@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class JSONReader : MonoBehaviour
 {
-    public TextAsset textJSON;
+    public TextAsset enemyJSON;
+    public TextAsset reactionJSON;
 
     [System.Serializable]
     public class EnemyParsed
@@ -20,16 +21,35 @@ public class JSONReader : MonoBehaviour
         public EnemyParsed[] enemy;
     }
 
+    [System.Serializable]
+    public class ReactionParsed
+    {
+        public string name;
+        public string displayName;
+        public float damage;
+        public float slowValue; // Must be in [0, 1]
+        public float slowDuration;
+        public string buff; // must be handled
+    }
+
+    [System.Serializable]
+    public class ReactionParsedList
+    {
+        public ReactionParsed[] reaction;
+    }
+
     public EnemyParsedList enemyParsedList = new();
+    public ReactionParsedList reactionParsedList = new();
 
     private void Awake()
     {
-        ReadEnemy();
+        ReadEnemies();
+        ReadReactions();
     }
 
-    private void ReadEnemy()
+    private void ReadEnemies()
     {
-        enemyParsedList = JsonUtility.FromJson<EnemyParsedList>(textJSON.text);
+        enemyParsedList = JsonUtility.FromJson<EnemyParsedList>(enemyJSON.text);
 
         for (int i = 0; i < enemyParsedList.enemy.Length; ++i)
         {
@@ -37,6 +57,19 @@ public class JSONReader : MonoBehaviour
             EnemyStats enemyStats = new(currentEnemy.health, currentEnemy.speed);
 
             Global.enemyValues.Add(currentEnemy.type, enemyStats);
+        }
+    }
+
+    private void ReadReactions()
+    {
+        reactionParsedList = JsonUtility.FromJson<ReactionParsedList>(reactionJSON.text);
+
+        for (int i = 0; i < reactionParsedList.reaction.Length; ++i)
+        {
+            ReactionParsed currentReaction = reactionParsedList.reaction[i];
+            ReactionStats reactionStats = new(currentReaction.displayName, currentReaction.damage, currentReaction.slowValue, currentReaction.slowDuration, currentReaction.buff);
+
+            Global.reactionValues.Add(currentReaction.name, reactionStats);
         }
     }
 }
