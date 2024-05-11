@@ -15,7 +15,7 @@ public class Enemy : MonoBehaviour
     private int _currentWaypoint = 0;
 
     private EnemyStats _stats;
-    
+
 
     private void Start()
     {
@@ -47,10 +47,55 @@ public class Enemy : MonoBehaviour
 
     private void HandleReaction(Global.Element element)
     {
-        //TODO
+        if (status == element || (status == Global.Element.None && element != Global.Element.None))
+        {
+            // Reapply status or apply it if it had none.
+            ApplyStatus(element);
+            return;
+        }
 
-        print(Global.reactionValues[Global.Element.Fire][Global.Element.Nature].displayName);
-        print(Global.reactionValues[Global.Element.Fire][Global.Element.Water].damage);
+        if (status != Global.Element.None && element == Global.Element.None)
+            return; // Nothing to do here
+            
+        // Status + Element Handler
+        HandleDamage(Global.reactionValues[status][element].damage);
+        ApplySlow(Global.reactionValues[status][element].slowValue, Global.reactionValues[status][element].slowDuration);
+
+        switch (Global.reactionValues[status][element].displayName)
+        {
+            case "Pyrus Voltes":
+                // TODO
+                break;
+            case "Terrus Pyrus":
+                // TODO
+                break;
+            case "Pyrus Noxius":
+                // TODO
+                break;
+            case "Pyrus Aquas":
+                // Nothing
+                print("Triggered Pyrus Aquas");
+                break;
+            case "Terrus Voltes":
+                // TODO
+                break;
+            case "Noxius Voltes":
+                // TODO
+                break;
+            case "Aquas Voltes":
+                // TODO
+                break;
+            case "Terrus Aquas":
+                // TODO
+                break;
+            case "Aquas Noxius":
+                // TODO
+                break;
+            default:
+                Debug.LogError("Undefined reaction!");
+                print(status + " + " + element);
+                break;
+        }
     }
 
     private void HandleDamage(float damage)
@@ -62,6 +107,34 @@ public class Enemy : MonoBehaviour
             // TODO: death animation
             Destroy(gameObject);
         }
+    }
+
+    public void ApplySlow(float slowValue, float slowDuration)
+    {
+        StartCoroutine(ApplySlowRoutine(slowValue, slowDuration));
+    }
+
+    private void ApplyStatus(Global.Element element)
+    {
+        StartCoroutine(ApplyStatusRoutine(element));
+    }
+
+    private IEnumerator ApplyStatusRoutine(Global.Element element)
+    {
+        status = element;
+
+        yield return new WaitForSeconds(Global.inflictStatusDuration);
+
+        status = Global.Element.None;
+    }
+
+    private IEnumerator ApplySlowRoutine(float slowValue, float slowDuration)
+    {
+        _agent.speed = _stats.speed * (1 - slowValue);
+
+        yield return new WaitForSeconds(slowDuration);
+
+        _agent.speed = _stats.speed;
     }
 
     private void FollowRoute()

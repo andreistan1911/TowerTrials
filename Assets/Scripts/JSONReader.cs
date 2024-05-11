@@ -67,16 +67,22 @@ public class JSONReader : MonoBehaviour
         for (int i = 0; i < reactionParsedList.reaction.Length; ++i)
         {
             ReactionParsed currentReaction = reactionParsedList.reaction[i];
-
             Global.Element firstElement = GetElementByLetter(currentReaction.name[0]);
             Global.Element secondElement = GetElementByLetter(currentReaction.name[1]);
 
             ReactionStats reactionStats = new(currentReaction.displayName, currentReaction.damage, currentReaction.slowValue, currentReaction.slowDuration, currentReaction.buff);
 
+            // Add entry to first element -> values[Fire][Water]
             if (Global.reactionValues.ContainsKey(firstElement))
                 Global.reactionValues[firstElement].Add(secondElement, reactionStats);
             else
                 Global.reactionValues.Add(firstElement, new Dictionary<Global.Element, ReactionStats>() { { secondElement, reactionStats } });
+
+            // Add entry to second element -> values[Water][Fire]
+            if (Global.reactionValues.ContainsKey(secondElement))
+                Global.reactionValues[secondElement].Add(firstElement, reactionStats);
+            else
+                Global.reactionValues.Add(secondElement, new Dictionary<Global.Element, ReactionStats>() { { firstElement, reactionStats } });
         }
     }
 
@@ -84,12 +90,27 @@ public class JSONReader : MonoBehaviour
     {
         Global.Element element = Global.Element.None;
 
-        if (letter == 'F')
-            element = Global.Element.Fire;
-        else if (letter == 'W')
-            element = Global.Element.Water;
-        else if (letter == 'N')
-            element = Global.Element.Nature;
+        switch (letter)
+        {
+            case 'F':
+                element = Global.Element.Fire;
+                break;
+            case 'L':
+                element = Global.Element.Lightning;
+                break;
+            case 'N':
+                element = Global.Element.Nature;
+                break;
+            case 'P':
+                element = Global.Element.Poison;
+                break;
+            case 'W':
+                element = Global.Element.Water;
+                break;
+            default:
+                Debug.LogError("Undefined element!");
+                break;
+        }
 
         return element;
     }
