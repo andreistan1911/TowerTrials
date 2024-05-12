@@ -8,6 +8,7 @@ public class Global : MonoBehaviour
     public static Dictionary<Element, Dictionary<Element, ReactionStats>> reactionValues = new();
 
     public static float inflictStatusDuration = 1.0f;
+    public static float reactionCooldown = 1.0f;
 
     public enum Element
     {

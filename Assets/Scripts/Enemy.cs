@@ -16,6 +16,15 @@ public class Enemy : MonoBehaviour
 
     private EnemyStats _stats;
 
+    private Coroutine _slowCoroutine;
+    private float _totalSlowDuration;
+    private Coroutine _statusCoroutine;
+    private float _totalStatusDuration;
+
+    private VFXManager _vfxManager;
+    private GameObject _vfxRoot;
+
+    private float _lastReactionTime;
 
     private void Start()
     {
@@ -25,12 +34,17 @@ public class Enemy : MonoBehaviour
         // Setup NavMeshAgent
         _agent = GetComponent<NavMeshAgent>();
 
+        _vfxManager = FindObjectOfType<VFXManager>();
+        _vfxRoot = transform.Find("VFXroot").gameObject;
+
         if (_agent == null)
             Debug.LogError("Null agent");
         if (waypoints.Length == 0)
             Debug.LogError("Waypoints must not be an empty Array!");
 
         _agent.speed = _stats.speed;
+
+        _lastReactionTime = -Global.reactionCooldown;
     }
 
     private void Update()
@@ -56,10 +70,15 @@ public class Enemy : MonoBehaviour
 
         if (status != Global.Element.None && element == Global.Element.None)
             return; // Nothing to do here
-            
+
+        if (Time.time - _lastReactionTime <= Global.reactionCooldown)
+            return; // internal cooldown not passed yet
+
         // Status + Element Handler
         HandleDamage(Global.reactionValues[status][element].damage);
         ApplySlow(Global.reactionValues[status][element].slowValue, Global.reactionValues[status][element].slowDuration);
+
+        _lastReactionTime = Time.time;
 
         switch (Global.reactionValues[status][element].displayName)
         {
@@ -74,7 +93,7 @@ public class Enemy : MonoBehaviour
                 break;
             case "Pyrus Aquas":
                 // Nothing
-                print("Triggered Pyrus Aquas");
+                _vfxManager.PlayFW(_vfxRoot);
                 break;
             case "Terrus Voltes":
                 // TODO
@@ -111,30 +130,85 @@ public class Enemy : MonoBehaviour
 
     public void ApplySlow(float slowValue, float slowDuration)
     {
+        // IT WORKS, DON'T ASK HOW
         StartCoroutine(ApplySlowRoutine(slowValue, slowDuration));
     }
 
     private void ApplyStatus(Global.Element element)
     {
+        // IT WORKS, DON'T ASK HOW
         StartCoroutine(ApplyStatusRoutine(element));
     }
 
     private IEnumerator ApplyStatusRoutine(Global.Element element)
     {
-        status = element;
+        // If another status effect is already active, update the total duration and exit
+        if (_statusCoroutine != null)
+        {
+            _totalStatusDuration = Global.inflictStatusDuration;
+            yield break;
+        }
 
-        yield return new WaitForSeconds(Global.inflictStatusDuration);
+        status = element;
+        _totalStatusDuration = Global.inflictStatusDuration;
+        _statusCoroutine = StartCoroutine(StatusTimerCoroutine());
+
+        yield return _statusCoroutine;
 
         status = Global.Element.None;
+        _statusCoroutine = null;
     }
+
+    private IEnumerator StatusTimerCoroutine()
+    {
+        float startTime = Time.time;
+
+        while (Time.time - startTime < _totalStatusDuration)
+        {
+            yield return null;
+        }
+
+        if (_totalStatusDuration > Global.inflictStatusDuration)
+        {
+            _totalStatusDuration -= Global.inflictStatusDuration;
+            _statusCoroutine = StartCoroutine(StatusTimerCoroutine());
+        }
+    }
+
 
     private IEnumerator ApplySlowRoutine(float slowValue, float slowDuration)
     {
-        _agent.speed = _stats.speed * (1 - slowValue);
+        if (_slowCoroutine != null)
+        {
+            _totalSlowDuration = slowDuration;
+            yield break;
+        }
 
-        yield return new WaitForSeconds(slowDuration);
+        _totalSlowDuration = slowDuration;
+        _agent.speed = _stats.speed * (1 - slowValue);
+        _slowCoroutine = StartCoroutine(SlowTimerCoroutine(slowDuration));
+
+        yield return _slowCoroutine;
 
         _agent.speed = _stats.speed;
+        _slowCoroutine = null;
+    }
+
+    private IEnumerator SlowTimerCoroutine(float duration)
+    {
+        float startTime = Time.time;
+
+        while (Time.time - startTime < duration)
+        {
+            yield return null;
+        }
+
+        // If another slow effect was added during this time, continue the effect
+        if (_totalSlowDuration > duration)
+        {
+            _totalSlowDuration -= duration;
+            _slowCoroutine = StartCoroutine(SlowTimerCoroutine(_totalSlowDuration));
+        }
     }
 
     private void FollowRoute()
