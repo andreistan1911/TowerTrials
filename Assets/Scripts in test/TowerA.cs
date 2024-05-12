@@ -47,7 +47,7 @@ public class TowerA : Tower
     {
         if (Time.time - _lastFire >= attackRate)
         {
-            Fire(enemy.gameObject);
+            Fire(enemy.transform.Find("ShootRoot").gameObject);
             _lastFire = Time.time;
         }
     }
