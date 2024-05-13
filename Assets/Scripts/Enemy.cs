@@ -119,6 +119,7 @@ public class Enemy : MonoBehaviour
 
     private void HandleDamage(float damage)
     {
+        print("Dealt " + damage + " damage");
         _stats.health -= damage;
 
         if (_stats.health <= 0)

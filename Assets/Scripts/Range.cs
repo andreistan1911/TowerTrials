@@ -6,12 +6,12 @@ using UnityEngine;
 public class Range : MonoBehaviour
 {
     private Tower _tower;
-    private Dictionary<Enemy, float> _enemies; // <enemy object, time spent in range>
+    private Dictionary<Enemy, float> _enemyTimers; // <enemy object, time spent in range>
 
     private void Start()
     {
         _tower = transform.parent.GetComponent<Tower>();
-        _enemies = new Dictionary<Enemy, float>();
+        _enemyTimers = new Dictionary<Enemy, float>();
 
         // Just to be sure
         if (_tower == null)
@@ -22,16 +22,16 @@ public class Range : MonoBehaviour
 
     private void Update()
     {
-        foreach (var enemy in _enemies.Keys.ToList())
+        foreach (var enemy in _enemyTimers.Keys.ToList())
         {
             if (enemy == null)
                 continue;
 
-            _enemies[enemy] += Time.deltaTime;
+            _enemyTimers[enemy] += Time.deltaTime;
 
-            if (_enemies[enemy] >= _tower.attackRate)
+            if (_enemyTimers[enemy] >= _tower.attackRate)
             {
-                _enemies[enemy] = 0;
+                _enemyTimers[enemy] = 0;
                 _tower.Fire(enemy);
             }
         }
@@ -45,7 +45,7 @@ public class Range : MonoBehaviour
 
         Enemy enemy = other.gameObject.GetComponent<Enemy>();
 
-        _enemies.Add(enemy, 0);
+        _enemyTimers.Add(enemy, 0);
         _tower.Fire(enemy);
     }
 
@@ -57,7 +57,7 @@ public class Range : MonoBehaviour
 
         Enemy enemy = other.gameObject.GetComponent<Enemy>();
 
-        _enemies[enemy] = 0;
-        _enemies.Remove(enemy);
+        _enemyTimers[enemy] = 0;
+        _enemyTimers.Remove(enemy);
     }
 }
