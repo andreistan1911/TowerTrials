@@ -16,6 +16,10 @@ public class VFXManager : MonoBehaviour
         StartCoroutine(DestroyAfterParticlesFinished(vfxInstance));
     }
 
+    public void PlayFN()
+    {
+    }
+
     private IEnumerator DestroyAfterParticlesFinished(ParticleSystem particleSystem)
     {
         // Wait until the ParticleSystem has stopped emitting or the object is destroyed
@@ -35,10 +39,6 @@ public class VFXManager : MonoBehaviour
 
         if (timer > remainingDuration)
             Destroy(particleSystem.gameObject);
-    }
-
-    public void PlayFN()
-    {
     }
 
 }
