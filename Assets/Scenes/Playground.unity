@@ -6476,7 +6476,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b67815b9be8c25438609e1f412961e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dps: 1
+  dps: 5
   element: 1
 --- !u!1 &874605735
 GameObject:
@@ -11685,6 +11685,7 @@ GameObject:
   - component: {fileID: 975936552}
   - component: {fileID: 975936551}
   - component: {fileID: 975936550}
+  - component: {fileID: 975936553}
   m_Layer: 0
   m_Name: Water
   m_TagString: Untagged
@@ -16503,6 +16504,20 @@ Transform:
   - {fileID: 2088299345}
   m_Father: {fileID: 1652035426}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &975936553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 975936549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b67815b9be8c25438609e1f412961e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dps: 1
+  element: 5
 --- !u!1 &1008945870
 GameObject:
   m_ObjectHideFlags: 0
@@ -32685,6 +32700,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2088299345}
   - component: {fileID: 2088299346}
+  - component: {fileID: 2088299347}
   m_Layer: 0
   m_Name: Hitbox
   m_TagString: Untagged
@@ -32723,6 +32739,18 @@ MonoBehaviour:
   m_distance: 4
   m_isTrigger: 1
   m_isFixScale: 1
+--- !u!114 &2088299347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2088299344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99d03255631745b43855e76e94b78495, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2090907731
 GameObject:
   m_ObjectHideFlags: 0
