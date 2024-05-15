@@ -12,6 +12,9 @@ public class Global : MonoBehaviour
     public static int dpsTicks = 4;
     public static float dpsCooldown;
 
+    public static float g = 9.81f;
+    public static float eps = 0.001f;
+
     public enum Element
     {
         None,

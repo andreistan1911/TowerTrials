@@ -14,7 +14,6 @@ public abstract class Tower : MonoBehaviour
     
     public void Start()
     {
-        Assert.AreNotEqual(0, damage);
         Assert.AreNotEqual(0, attackRate);
     }
 

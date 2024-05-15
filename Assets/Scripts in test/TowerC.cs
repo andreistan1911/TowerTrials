@@ -26,7 +26,7 @@ public class TowerC : Tower
     public void Fire(GameObject target)
     {
         GameObject projectileInstance = Instantiate(projectilePrefab, fireRoot.position, Quaternion.identity);
-        Projectile projectile = projectileInstance.GetComponent<Projectile>();
+        Bullet projectile = projectileInstance.GetComponent<Bullet>();
 
         if (projectile == null)
         {

@@ -3,34 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Scripting.APIUpdating;
 
-public class Projectile : MonoBehaviour
+public class Bullet : Projectile
 {
-    private Global.Element _element;
-
-    private float _damage;
-    private float _speed;
-
-    private Transform _target;
-    private Vector3 _direction;
-    private readonly float _birthTime;
-
-    public Transform Target {
-        set { _target = value; }
-    }
-
-    public float Damage {
-        set { _damage = value; }
-    }
-
-    public float Speed
-    {
-        set { _speed = value; }
-    }
-
-    public Global.Element Element
-    {
-        set { _element = value; }
-    }
 
     private void Update()
     {
