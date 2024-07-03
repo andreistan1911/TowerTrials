@@ -5,10 +5,12 @@ using UnityEngine;
 public class VFXManager : MonoBehaviour
 {
     public ParticleSystem FW;
+    public ParticleSystem FN;
+    public ParticleSystem LW;
 
-    public void PlayFW(GameObject obj)
+    private void Play(GameObject obj, ParticleSystem ps)
     {
-        ParticleSystem vfxInstance = Instantiate(FW, obj.transform.position, obj.transform.rotation);
+        ParticleSystem vfxInstance = Instantiate(ps, obj.transform.position, obj.transform.rotation);
 
         vfxInstance.transform.parent = obj.transform;
 
@@ -16,8 +18,19 @@ public class VFXManager : MonoBehaviour
         StartCoroutine(DestroyAfterParticlesFinished(vfxInstance));
     }
 
-    public void PlayFN()
+    public void PlayFW(GameObject obj)
     {
+        Play(obj, FW);
+    }
+
+    public void PlayFN(GameObject obj)
+    {
+        Play(obj, FN);
+    }
+
+    public void PlayLW(GameObject obj)
+    {
+        Play(obj, LW);
     }
 
     private IEnumerator DestroyAfterParticlesFinished(ParticleSystem particleSystem)

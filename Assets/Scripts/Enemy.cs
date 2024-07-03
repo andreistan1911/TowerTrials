@@ -96,13 +96,25 @@ public class Enemy : MonoBehaviour
                 _vfxManager.PlayFW(_vfxRoot);
                 break;
             case "Terrus Voltes":
-                // TODO
+                // TODOw3
                 break;
             case "Noxius Voltes":
                 // TODO
                 break;
             case "Aquas Voltes":
-                // TODO
+                // TODO Create a ball of stuna
+
+                Enemy[] enemies = FindObjectsOfType<Enemy>();
+
+                foreach (Enemy enemy in enemies)
+                {
+                    // VALUE SHOULD BE MODIFIED FOR BALANCING !!!
+                    print(Vector3.Distance(enemy.transform.position, transform.position));
+                    if (Vector3.Distance(enemy.transform.position, transform.position) <= 10)
+                        enemy.ApplySlow(Global.reactionValues[Global.Element.Lightning][Global.Element.Water].slowValue, Global.reactionValues[Global.Element.Lightning][Global.Element.Water].slowDuration);
+                }
+
+                _vfxManager.PlayLW(_vfxRoot);
                 break;
             case "Terrus Aquas":
                 // TODO
