@@ -53,13 +53,13 @@ public class Enemy : MonoBehaviour
         FollowRoute();
     }
 
-    public void TakeDamage(float damage, Global.Element element)
+    public void TakeDamage(float damage, Global.Element element, int towerBuffCode = Global.BUFF_NONE)
     {
-        HandleReaction(element);
+        HandleReaction(element, towerBuffCode);
         HandleDamage(damage);
     }
 
-    private void HandleReaction(Global.Element element)
+    private void HandleReaction(Global.Element element, int towerBuffCode)
     {
         if (status == element || (status == Global.Element.None && element != Global.Element.None))
         {
@@ -76,9 +76,19 @@ public class Enemy : MonoBehaviour
 
         // Status + Element Handler
         HandleDamage(Global.reactionValues[status][element].damage);
-        ApplySlow(
-            Global.reactionValues[status][element].slowValue,
-            Global.reactionValues[status][element].slowDuration);
+        
+        // corner case for NW
+        if (!(Global.reactionValues[status][element].displayName == "Terrus Aquas"))
+            ApplySlow(
+                Global.reactionValues[status][element].slowValue,
+                Global.reactionValues[status][element].slowDuration);
+
+        if ((towerBuffCode & Global.BUFF_SLOW) != 0)
+           ApplySlow(
+                Global.reactionValues[Global.Element.Nature][Global.Element.Water].slowValue,
+                Global.reactionValues[Global.Element.Nature][Global.Element.Water].slowDuration);
+
+        // TODO!! pentru buff shred
 
         _lastReactionTime = Time.time;
 
@@ -98,7 +108,7 @@ public class Enemy : MonoBehaviour
                 _vfxManager.PlayFW(_vfxRoot);
                 break;
             case "Terrus Voltes":
-                // TODOw3
+                // TODO
                 break;
             case "Noxius Voltes":
                 // TODO
@@ -106,10 +116,11 @@ public class Enemy : MonoBehaviour
             case "Aquas Voltes":
                 Enemy[] enemies = FindObjectsOfType<Enemy>();
 
+                // VALUE SHOULD BE MODIFIED FOR BALANCING !!!
                 float stunRadius = 3;
                 foreach (Enemy enemy in enemies)
                 {
-                    // VALUE SHOULD BE MODIFIED FOR BALANCING !!!
+                    
                     if (Vector3.Distance(enemy.transform.position, transform.position) <= stunRadius)
                         enemy.ApplySlow(
                             Global.reactionValues[Global.Element.Lightning][Global.Element.Water].slowValue,
@@ -119,8 +130,6 @@ public class Enemy : MonoBehaviour
                 _vfxManager.PlayLW(_vfxRoot);
                 break;
             case "Terrus Aquas":
-                // TODO
-                // Closest tower slows on next 3 shots
                 Tower[] towers = FindObjectsOfType<Tower>();
 
                 float bestDistance = 1000;

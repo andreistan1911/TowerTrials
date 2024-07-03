@@ -15,9 +15,9 @@ public class Global : MonoBehaviour
     public static float g = 9.81f;
     public static float eps = 0.001f;
 
-    public const int BUFF_NONE = 1000;
-    public const int BUFF_SLOW = 1001;
-    public const int BUFF_SHRED = 1002;
+    public const int BUFF_NONE = 0;
+    public const int BUFF_SLOW = 1;
+    public const int BUFF_SHRED = 2;
 
     public enum Element
     {

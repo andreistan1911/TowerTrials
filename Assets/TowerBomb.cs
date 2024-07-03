@@ -42,6 +42,7 @@ public class TowerBomb : Tower
         bomb.Damage = damage;
         bomb.Element = element;
         bomb.Height = launchHeight;
+        bomb.BuffCode &= _buffCode;
     }
 
     override public void DoFireLogic(Enemy enemy)

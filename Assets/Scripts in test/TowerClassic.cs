@@ -39,6 +39,7 @@ public class TowerClassic : Tower
         bullet.Damage = damage;
         bullet.Speed = bulletSpeed;
         bullet.Element = element;
+        bullet.BuffCode = _buffCode;
     }
 
     override public void DoFireLogic(Enemy enemy)

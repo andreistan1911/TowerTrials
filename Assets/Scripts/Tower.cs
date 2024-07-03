@@ -13,37 +13,64 @@ public abstract class Tower : MonoBehaviour
     public Global.Element element;
 
     protected int _buffCode = Global.BUFF_NONE;
-    protected int _nrShotsBuffed = 0;
+    private Dictionary<int, int> _nrShotsBuffed;
 
     public void Start()
     {
+        _nrShotsBuffed.Add(Global.BUFF_NONE, 0);
+        _nrShotsBuffed.Add(Global.BUFF_SLOW, 0);
+        _nrShotsBuffed.Add(Global.BUFF_SHRED, 0);
+
         Assert.AreNotEqual(0, attackRate);
     }
 
     public void Buff(int buffCode)
     {
-        _buffCode = buffCode;
+        _buffCode &= buffCode;
     }
 
-    private void ApplyBuff()
+    private void SetNrOfShotsToBeBuffed()
     {
         // TODO: Maybe we change 3 as something else
-        _nrShotsBuffed = _buffCode == Global.BUFF_NONE ? 0 : 3;
+        if (_buffCode == Global.BUFF_NONE)
+        {
+            _nrShotsBuffed[Global.BUFF_SLOW] = 0;
+            _nrShotsBuffed[Global.BUFF_SHRED] = 0;
+        }
+        else
+            _nrShotsBuffed[_buffCode] = 3;
+    }
+
+    private void DoBuffLogic()
+    {
+        if (_buffCode == Global.BUFF_NONE)
+            return;
+
+        if (_buffCode == Global.BUFF_SLOW)
+        {
+
+        }
     }
 
     public void Fire(Enemy enemy)
     {
-        ApplyBuff();
+        SetNrOfShotsToBeBuffed();
+
         DoFireLogic(enemy);
-        UpdateBuffCode();
+        UpdateBuffState();
     }
 
-    private void UpdateBuffCode()
+    private void UpdateBuffState()
     {
-        if (_nrShotsBuffed > 0)
-            _nrShotsBuffed--;
+        if (_nrShotsBuffed[Global.BUFF_SLOW] > 0)
+            _nrShotsBuffed[Global.BUFF_SLOW]--;
         else
-            _buffCode = Global.BUFF_NONE;
+            _buffCode ^= Global.BUFF_SLOW;
+
+        if (_nrShotsBuffed[Global.BUFF_SHRED] > 0)
+            _nrShotsBuffed[Global.BUFF_SHRED]--;
+        else
+            _buffCode ^= Global.BUFF_SHRED;
     }
 
     abstract public void DoFireLogic(Enemy enemy);

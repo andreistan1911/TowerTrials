@@ -6,6 +6,6 @@ public class TowerAOE : Tower
 {
     override public void DoFireLogic(Enemy enemy)
     {
-        enemy.TakeDamage(damage, element);
+        enemy.TakeDamage(damage, element, _buffCode);
     }
 }

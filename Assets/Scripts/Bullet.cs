@@ -31,7 +31,7 @@ public class Bullet : Projectile
         {
             Enemy enemy = collision.gameObject.GetComponent<Enemy>();
 
-            enemy.TakeDamage(_damage, _element);
+            enemy.TakeDamage(_damage, _element, _buffCode);
             Destroy(gameObject);
         }
     }
