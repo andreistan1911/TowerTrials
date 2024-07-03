@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Bomb : Projectile
 {
-    public new Transform _target;
     public float _height;
 
     private float _deltaHeightUp, _heightInitial;
@@ -12,9 +11,18 @@ public class Bomb : Projectile
     private float _velocityYInitial, _velocityYInitialSquared;
 
     private int _ascending = 1;
+    private bool _reachedTarget = false;
+    private MeshRenderer _renderer;
+
+    private ParticleSystem _VFX;
+    private float _timeElapsedSinceExplosion = 0f;
 
     private void Start()
     {
+        _renderer = GetComponent<MeshRenderer>();
+        _VFX = GetComponentInChildren<ParticleSystem>();
+        _VFX.Stop();
+
         PreCompute();
     }
 
@@ -78,6 +86,16 @@ public class Bomb : Projectile
 
     private void Update()
     {
+        if (_reachedTarget)
+        {
+            _timeElapsedSinceExplosion += Time.deltaTime;
+
+            if (_timeElapsedSinceExplosion >= 1.5)//_VFX.main.duration)
+                Destroy(gameObject);
+
+            return;
+        }
+
         _deltaHeightUp = transform.position.y - _heightInitial;
 
         // Above given height so it should start falling.
@@ -93,5 +111,15 @@ public class Bomb : Projectile
         currentDirection.y = _ascending * _velocity.y;
 
         transform.position += currentDirection * Time.deltaTime;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!other.gameObject.CompareTag("Floor"))
+            return;
+
+        _reachedTarget = true;
+        _renderer.enabled = false;
+        _VFX.Play();
     }
 }

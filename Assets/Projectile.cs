@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    [SerializeField]
     protected Transform _target;
     protected float _damage;
     protected Global.Element _element;
