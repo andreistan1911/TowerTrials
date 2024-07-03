@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TowerD : Tower
 {
-    override public void Fire(Enemy enemy)
+    override public void DoFireLogic(Enemy enemy)
     {
         enemy.TakeDamage(damage, element);
     }

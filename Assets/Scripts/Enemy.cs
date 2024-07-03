@@ -76,7 +76,9 @@ public class Enemy : MonoBehaviour
 
         // Status + Element Handler
         HandleDamage(Global.reactionValues[status][element].damage);
-        ApplySlow(Global.reactionValues[status][element].slowValue, Global.reactionValues[status][element].slowDuration);
+        ApplySlow(
+            Global.reactionValues[status][element].slowValue,
+            Global.reactionValues[status][element].slowDuration);
 
         _lastReactionTime = Time.time;
 
@@ -102,22 +104,42 @@ public class Enemy : MonoBehaviour
                 // TODO
                 break;
             case "Aquas Voltes":
-                // TODO Create a ball of stuna
-
                 Enemy[] enemies = FindObjectsOfType<Enemy>();
 
+                float stunRadius = 3;
                 foreach (Enemy enemy in enemies)
                 {
                     // VALUE SHOULD BE MODIFIED FOR BALANCING !!!
-                    print(Vector3.Distance(enemy.transform.position, transform.position));
-                    if (Vector3.Distance(enemy.transform.position, transform.position) <= 10)
-                        enemy.ApplySlow(Global.reactionValues[Global.Element.Lightning][Global.Element.Water].slowValue, Global.reactionValues[Global.Element.Lightning][Global.Element.Water].slowDuration);
+                    if (Vector3.Distance(enemy.transform.position, transform.position) <= stunRadius)
+                        enemy.ApplySlow(
+                            Global.reactionValues[Global.Element.Lightning][Global.Element.Water].slowValue,
+                            Global.reactionValues[Global.Element.Lightning][Global.Element.Water].slowDuration);
                 }
 
                 _vfxManager.PlayLW(_vfxRoot);
                 break;
             case "Terrus Aquas":
                 // TODO
+                // Closest tower slows on next 3 shots
+                Tower[] towers = FindObjectsOfType<Tower>();
+
+                float bestDistance = 1000;
+                int bestIndex = 0;
+
+                for (int i = 0; i < towers.Length; ++i)
+                {
+                    float distanceToCurrentTower = Vector3.Distance(transform.position, towers[i].transform.position);
+
+                    if (distanceToCurrentTower < bestDistance)
+                    {
+                        bestDistance = distanceToCurrentTower;
+                        bestIndex = i;
+                    }
+                }
+
+                towers[bestIndex].Buff(Global.BUFF_SLOW);
+
+                _vfxManager.PlayNW(_vfxRoot);
                 break;
             case "Aquas Noxius":
                 // TODO

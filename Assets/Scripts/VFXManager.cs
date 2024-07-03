@@ -7,6 +7,7 @@ public class VFXManager : MonoBehaviour
     public ParticleSystem FW;
     public ParticleSystem FN;
     public ParticleSystem LW;
+    public ParticleSystem NW;
 
     private void Play(GameObject obj, ParticleSystem ps)
     {
@@ -31,6 +32,11 @@ public class VFXManager : MonoBehaviour
     public void PlayLW(GameObject obj)
     {
         Play(obj, LW);
+    }
+
+    public void PlayNW(GameObject obj)
+    {
+        Play(obj, NW);
     }
 
     private IEnumerator DestroyAfterParticlesFinished(ParticleSystem particleSystem)

@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TowerE : Tower
+public class TowerAOE : Tower
 {
-    override public void Fire(Enemy enemy)
+    override public void DoFireLogic(Enemy enemy)
     {
         enemy.TakeDamage(damage, element);
     }

@@ -41,7 +41,7 @@ public class TowerClassic : Tower
         bullet.Element = element;
     }
 
-    override public void Fire(Enemy enemy)
+    override public void DoFireLogic(Enemy enemy)
     {
         if (Time.time - _lastFire >= attackRate)
         {

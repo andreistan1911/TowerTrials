@@ -44,7 +44,7 @@ public class TowerBomb : Tower
         bomb.Height = launchHeight;
     }
 
-    override public void Fire(Enemy enemy)
+    override public void DoFireLogic(Enemy enemy)
     {
         if (Time.time - _lastFire >= attackRate)
         {
