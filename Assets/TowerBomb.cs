@@ -28,25 +28,28 @@ public class TowerBomb : Tower
 
     private void Fire(GameObject target)
     {
-        GameObject bulletInstance = Instantiate(bombPrefab, _fireRoot.position, Quaternion.identity);
-        Bomb bomb = bulletInstance.GetComponent<Bomb>();
+        GameObject bombInstance = Instantiate(bombPrefab, _fireRoot.position, Quaternion.identity);
+        Bomb bomb = bombInstance.GetComponent<Bomb>();
 
         if (bomb == null)
         {
-            Destroy(bulletInstance);
-            Debug.LogError("Bullet script not found on the projectile prefab.");
+            Destroy(bombInstance);
+            Debug.LogError("Bomb script not found on the projectile prefab.");
             return;
         }
 
         bomb.Target = target.transform;
         bomb.Damage = damage;
         bomb.Element = element;
-
-        //bomb.Height = launchHeight;
+        bomb.Height = launchHeight;
     }
 
     override public void Fire(Enemy enemy)
     {
-        
+        if (Time.time - _lastFire >= attackRate)
+        {
+            Fire(enemy.transform.Find("ShootRoot").gameObject);
+            _lastFire = Time.time;
+        }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bomb : Projectile
 {
-    public float _height;
+    private float _height;
 
     private float _deltaHeightUp, _heightInitial;
     private Vector3 _velocity;
@@ -16,12 +16,28 @@ public class Bomb : Projectile
 
     private ParticleSystem _VFX;
     private float _timeElapsedSinceExplosion = 0f;
+    private float _VFXtime;
+
+    private Transform _explosionTransform;
+    private Explosion _explosion;
+
+    public float Height
+    {
+        set { _height = value; }
+    }
 
     private void Start()
     {
         _renderer = GetComponent<MeshRenderer>();
         _VFX = GetComponentInChildren<ParticleSystem>();
+        _explosionTransform = _VFX.transform.Find("Hitbox");
+        _explosion = _explosionTransform.gameObject.GetComponent<Explosion>();
+
         _VFX.Stop();
+        _VFXtime = _VFX.main.duration + _VFX.main.startLifetime.constant;
+
+        _explosion.Damage = _damage;
+        _explosion.Element = _element;
 
         PreCompute();
     }
@@ -88,14 +104,15 @@ public class Bomb : Projectile
     {
         if (_reachedTarget)
         {
-            _timeElapsedSinceExplosion += Time.deltaTime;
-
-            if (_timeElapsedSinceExplosion >= 1.5)//_VFX.main.duration)
-                Destroy(gameObject);
-
+            CheckTimeElapsedSinceExplosionStart();
             return;
         }
 
+        UpdatePosition();
+    }
+
+    private void UpdatePosition()
+    {
         _deltaHeightUp = transform.position.y - _heightInitial;
 
         // Above given height so it should start falling.
@@ -113,6 +130,17 @@ public class Bomb : Projectile
         transform.position += currentDirection * Time.deltaTime;
     }
 
+    /// <summary>
+    /// Updates the time elapsed since explosion start. When it is above VFX total time destroy current object.
+    /// </summary>
+    private void CheckTimeElapsedSinceExplosionStart()
+    {
+        _timeElapsedSinceExplosion += Time.deltaTime;
+        
+        if (_timeElapsedSinceExplosion >= _VFXtime)
+            Destroy(gameObject);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (!other.gameObject.CompareTag("Floor"))
@@ -120,6 +148,10 @@ public class Bomb : Projectile
 
         _reachedTarget = true;
         _renderer.enabled = false;
+
+        float scale = 18f;
+        _explosionTransform.localScale = new Vector3(scale, scale, scale);
+
         _VFX.Play();
     }
 }
