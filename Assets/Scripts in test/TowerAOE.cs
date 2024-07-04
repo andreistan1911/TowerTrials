@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class TowerAOE : Tower
 {
-    override public void DoFireLogic(Enemy enemy)
+    override public void Fire(Enemy enemy)
     {
+        // todo here the sticky note -> update buff state somehow -> copy from towerclassic
         enemy.TakeDamage(damage, element, _buffCode);
     }
 }

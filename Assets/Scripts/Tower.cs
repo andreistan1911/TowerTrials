@@ -17,6 +17,7 @@ public abstract class Tower : MonoBehaviour
 
     public void Start()
     {
+        _nrShotsBuffed = new();
         _nrShotsBuffed.Add(Global.BUFF_NONE, 0);
         _nrShotsBuffed.Add(Global.BUFF_SLOW, 0);
         _nrShotsBuffed.Add(Global.BUFF_SHRED, 0);
@@ -26,7 +27,9 @@ public abstract class Tower : MonoBehaviour
 
     public void Buff(int buffCode)
     {
-        _buffCode &= buffCode;
+        _buffCode |= buffCode;
+
+        SetNrOfShotsToBeBuffed();
     }
 
     private void SetNrOfShotsToBeBuffed()
@@ -38,40 +41,28 @@ public abstract class Tower : MonoBehaviour
             _nrShotsBuffed[Global.BUFF_SHRED] = 0;
         }
         else
-            _nrShotsBuffed[_buffCode] = 3;
-    }
-
-    private void DoBuffLogic()
-    {
-        if (_buffCode == Global.BUFF_NONE)
-            return;
-
-        if (_buffCode == Global.BUFF_SLOW)
         {
+            if ((_buffCode & Global.BUFF_SLOW) != 0)
+                _nrShotsBuffed[Global.BUFF_SLOW] = 3;
 
+            if ((_buffCode & Global.BUFF_SHRED) != 0)
+                _nrShotsBuffed[Global.BUFF_SHRED] = 3;
         }
+            
     }
 
-    public void Fire(Enemy enemy)
-    {
-        SetNrOfShotsToBeBuffed();
-
-        DoFireLogic(enemy);
-        UpdateBuffState();
-    }
-
-    private void UpdateBuffState()
+    protected void UpdateBuffState()
     {
         if (_nrShotsBuffed[Global.BUFF_SLOW] > 0)
             _nrShotsBuffed[Global.BUFF_SLOW]--;
-        else
+        else if ((_buffCode & Global.BUFF_SLOW) != 0)
             _buffCode ^= Global.BUFF_SLOW;
 
         if (_nrShotsBuffed[Global.BUFF_SHRED] > 0)
             _nrShotsBuffed[Global.BUFF_SHRED]--;
-        else
+        else if ((_buffCode & Global.BUFF_SHRED) != 0)
             _buffCode ^= Global.BUFF_SHRED;
     }
 
-    abstract public void DoFireLogic(Enemy enemy);
+    abstract public void Fire(Enemy enemy);
 }

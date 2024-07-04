@@ -13229,7 +13229,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 5
   attackRate: 1.1
-  element: 2
+  element: 3
   bulletSpeed: 9.31
   bulletPrefab: {fileID: 2668085444429482772, guid: 550e7984bd19a904ba8f2e5150015770,
     type: 3}
@@ -13348,7 +13348,7 @@ MonoBehaviour:
   FW: {fileID: 311935264417152814, guid: bc171f29e4dbabc489b7eeeae4119720, type: 3}
   FN: {fileID: 0}
   LW: {fileID: 311935264417152814, guid: bc171f29e4dbabc489b7eeeae4119720, type: 3}
-  NW: {fileID: 0}
+  NW: {fileID: 1008945872}
 --- !u!4 &1719014665
 Transform:
   m_ObjectHideFlags: 0

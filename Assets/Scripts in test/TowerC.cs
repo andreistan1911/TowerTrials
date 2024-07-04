@@ -40,7 +40,7 @@ public class TowerC : Tower
         projectile.Speed = projectileSpeed;
     }
 
-    override public void DoFireLogic(Enemy enemy)
+    override public void Fire(Enemy enemy)
     {
         Fire(enemy.gameObject);
     }

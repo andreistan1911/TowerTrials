@@ -61,6 +61,8 @@ public class Enemy : MonoBehaviour
 
     private void HandleReaction(Global.Element element, int towerBuffCode)
     {
+        HandleTowerBuffs(towerBuffCode);
+
         if (status == element || (status == Global.Element.None && element != Global.Element.None))
         {
             // Reapply status or apply it if it had none.
@@ -76,19 +78,12 @@ public class Enemy : MonoBehaviour
 
         // Status + Element Handler
         HandleDamage(Global.reactionValues[status][element].damage);
-        
+
         // corner case for NW
         if (!(Global.reactionValues[status][element].displayName == "Terrus Aquas"))
             ApplySlow(
                 Global.reactionValues[status][element].slowValue,
                 Global.reactionValues[status][element].slowDuration);
-
-        if ((towerBuffCode & Global.BUFF_SLOW) != 0)
-           ApplySlow(
-                Global.reactionValues[Global.Element.Nature][Global.Element.Water].slowValue,
-                Global.reactionValues[Global.Element.Nature][Global.Element.Water].slowDuration);
-
-        // TODO!! pentru buff shred
 
         _lastReactionTime = Time.time;
 
@@ -120,7 +115,7 @@ public class Enemy : MonoBehaviour
                 float stunRadius = 3;
                 foreach (Enemy enemy in enemies)
                 {
-                    
+
                     if (Vector3.Distance(enemy.transform.position, transform.position) <= stunRadius)
                         enemy.ApplySlow(
                             Global.reactionValues[Global.Element.Lightning][Global.Element.Water].slowValue,
@@ -132,7 +127,7 @@ public class Enemy : MonoBehaviour
             case "Terrus Aquas":
                 Tower[] towers = FindObjectsOfType<Tower>();
 
-                float bestDistance = 1000;
+                float bestDistance = 100000;
                 int bestIndex = 0;
 
                 for (int i = 0; i < towers.Length; ++i)
@@ -157,6 +152,18 @@ public class Enemy : MonoBehaviour
                 Debug.LogError("Undefined reaction!");
                 print(status + " + " + element);
                 break;
+        }
+    }
+
+    private void HandleTowerBuffs(int towerBuffCode)
+    {
+        // TODO!! pentru buff shred
+
+        if ((towerBuffCode & Global.BUFF_SLOW) != 0)
+        {
+            ApplySlow(
+                 Global.reactionValues[Global.Element.Nature][Global.Element.Water].slowValue,
+                 Global.reactionValues[Global.Element.Nature][Global.Element.Water].slowDuration);
         }
     }
 

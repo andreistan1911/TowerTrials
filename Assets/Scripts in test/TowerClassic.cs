@@ -42,10 +42,11 @@ public class TowerClassic : Tower
         bullet.BuffCode = _buffCode;
     }
 
-    override public void DoFireLogic(Enemy enemy)
+    override public void Fire(Enemy enemy)
     {
         if (Time.time - _lastFire >= attackRate)
         {
+            UpdateBuffState();
             Fire(enemy.transform.Find("ShootRoot").gameObject);
             _lastFire = Time.time;
         }

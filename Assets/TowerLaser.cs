@@ -39,7 +39,7 @@ public class TowerLaser : Tower
         bullet.Element = element;
     }
 
-    override public void DoFireLogic(Enemy enemy)
+    override public void Fire(Enemy enemy)
     {
         if (Time.time - _lastFire >= attackRate)
         {
