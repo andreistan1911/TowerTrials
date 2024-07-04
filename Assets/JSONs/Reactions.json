@@ -68,8 +68,8 @@
       "name": "NW",
       "displayName": "Terrus Aquas",
       "damage": 10.0,
-      "slowValue": 0.9,
-      "slowDuration": 0.6,
+      "slowValue": 0.3,
+      "slowDuration": 0.3,
       "buff": "Cel mai apropiat tower da slow pe urm 3 shoturi"
     },
     {
