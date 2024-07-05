@@ -26,7 +26,9 @@ public class ConeWeaponHitbox : MonoBehaviour
 
         Enemy enemy = other.GetComponent<Enemy>();
 
-        _dpsTimers.Add(enemy, 0);
+        if (!_dpsTimers.ContainsKey(enemy))
+            _dpsTimers.Add(enemy, 0);
+
         enemy.TakeDamage(_dpt, _element); // TODO: glitch: you can flick around for more dps, but not a priority now
     }
 
