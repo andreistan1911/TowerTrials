@@ -78,7 +78,7 @@
       "damage": 10.0,
       "slowValue": 0.5,
       "slowDuration": 1.0,
-      "buff": "Def shread"
+      "buff": "Def shred"
     }
   ]
 }
