@@ -30,6 +30,11 @@ public class Shoot : MonoBehaviour
         {
             currentWeaponNr = 1;
         }
+
+        if (Keyboard.current.digit3Key.wasPressedThisFrame)
+        {
+            currentWeaponNr = 2;
+        }
     }
 
     private void OnEnable()

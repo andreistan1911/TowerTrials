@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - Floor
   - VFX
+  - DeathZone
   layers:
   - Default
   - TransparentFX
