@@ -35,7 +35,7 @@ public class DemoEnemy : MonoBehaviour
 
         float distance = Vector3.Distance(waypoints[_currentWaypoint].transform.position, transform.position);
 
-        if (distance < 0.7)
+        if (distance < 1.2)
         {
             if (_currentWaypoint >= waypoints.Length - 1)
             {
