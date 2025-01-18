@@ -208,8 +208,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 22328678}
-        m_TargetAssemblyTypeName: Menu2Story, Assembly-CSharp
-        m_MethodName: ChangeToTutorialScene
+        m_TargetAssemblyTypeName: ButtonSceneChange, Assembly-CSharp
+        m_MethodName: ChangeScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -266,9 +266,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 22328673}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 218586f8da12bc845b1b71a8904b78ac, type: 3}
+  m_Script: {fileID: 11500000, guid: ce527619da503294d82b3967a91898b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneName: StoryText
 --- !u!1 &95919241
 GameObject:
   m_ObjectHideFlags: 0
@@ -970,8 +971,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1249481994}
-        m_TargetAssemblyTypeName: Menu2Endless, Assembly-CSharp
-        m_MethodName: ChangeToEndless
+        m_TargetAssemblyTypeName: ButtonSceneChange, Assembly-CSharp
+        m_MethodName: ChangeScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1028,9 +1029,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1249481989}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79e6be5e433c52141be78066a692f08a, type: 3}
+  m_Script: {fileID: 11500000, guid: ce527619da503294d82b3967a91898b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneName: Endless
 --- !u!1 &1652440440
 GameObject:
   m_ObjectHideFlags: 0
